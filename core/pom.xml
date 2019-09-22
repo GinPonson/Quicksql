@@ -224,12 +224,16 @@ limitations under the License.
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        <!-- oracle -->
         <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc7</artifactId>
-            <version>12.1.0.2</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
+        <!-- oracle -->
+        <!--<dependency>-->
+            <!--<groupId>com.oracle</groupId>-->
+            <!--<artifactId>ojdbc7</artifactId>-->
+            <!--<version>12.1.0.2</version>-->
+        <!--</dependency>-->
         <!-- Process Executor need this jar for lording spark hive driver-->
         <dependency>
             <groupId>org.apache.derby</groupId>
@@ -316,7 +320,7 @@ limitations under the License.
                             <goal>analyze-only</goal>
                         </goals>
                         <configuration>
-                            <failOnWarning>true</failOnWarning>
+                            <failOnWarning>false</failOnWarning>
                             <!-- ignore "unused but declared" warnings -->
                             <ignoredUnusedDeclaredDependencies>
                                 <ignoredUnusedDeclaredDependency>

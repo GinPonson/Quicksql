@@ -41,10 +41,7 @@ import org.apache.calcite.rel.rel2sql.RelToSqlConverter;
 import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.sql.SqlDialect;
 import org.apache.calcite.sql.SqlNode;
-import org.apache.calcite.sql.dialect.CalciteSqlDialect;
-import org.apache.calcite.sql.dialect.HiveSqlDialect;
-import org.apache.calcite.sql.dialect.MysqlSqlDialect;
-import org.apache.calcite.sql.dialect.OracleSqlDialect;
+import org.apache.calcite.sql.dialect.*;
 import org.apache.calcite.sql.parser.SqlParseException;
 import org.apache.calcite.tools.FrameworkConfig;
 import org.apache.calcite.tools.Frameworks;
@@ -115,7 +112,13 @@ public abstract class PreparedExtractProcedure extends ExtractProcedure {
                         .getProperties(), config, relNode, tableName);
                 case MetadataMapping.ORACLE:
                     return new OracleExtractor(next, ((JdbcTable) relOptTable.getTable())
-                        .getProperties(), config, relNode, tableName);
+                            .getProperties(), config, relNode, tableName);
+                case MetadataMapping.POSTGRESQL:
+                    return new PostgresqlExtractor(next, ((JdbcTable) relOptTable.getTable())
+                            .getProperties(), config, relNode, tableName);
+                case MetadataMapping.MSSQL:
+                    return new MssqlExtractor(next, ((JdbcTable) relOptTable.getTable())
+                            .getProperties(), config, relNode, tableName);
                 default:
                     throw new RuntimeException("");
             }
@@ -390,6 +393,44 @@ public abstract class PreparedExtractProcedure extends ExtractProcedure {
         @Override
         public String getCategory() {
             return "Oracle";
+        }
+    }
+
+    public static class PostgresqlExtractor extends PreparedExtractProcedure {
+
+        public PostgresqlExtractor(QueryProcedure next, Properties properties,
+                                   FrameworkConfig config, RelNode relNode,
+                                   String tableName) {
+            super(next, properties, config, relNode, tableName);
+        }
+
+        @Override
+        public String toRecognizedQuery() {
+            return sql(PostgresqlSqlDialect.DEFAULT);
+        }
+
+        @Override
+        public String getCategory() {
+            return "Postgresql";
+        }
+    }
+
+    public static class MssqlExtractor extends PreparedExtractProcedure {
+
+        public MssqlExtractor(QueryProcedure next, Properties properties,
+                              FrameworkConfig config, RelNode relNode,
+                              String tableName) {
+            super(next, properties, config, relNode, tableName);
+        }
+
+        @Override
+        public String toRecognizedQuery() {
+            return sql(MssqlSqlDialect.DEFAULT);
+        }
+
+        @Override
+        public String getCategory() {
+            return "Mssql";
         }
     }
 

@@ -38,6 +38,8 @@ public enum MetadataMapping {
     public static final String MYSQL = "mysql";
     public static final String ORACLE = "oracle";
     public static final String HIVE = "hive";
+    public static final String POSTGRESQL = "postgresql";
+    public static final String MSSQL = "mssql";
 
     private static final String JOINT_FLAG = "%";
     String schemaClass;
